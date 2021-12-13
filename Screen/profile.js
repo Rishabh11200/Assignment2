@@ -283,7 +283,7 @@ export default class profile extends React.Component {
               />
               <Text style={styles.label}>Dart</Text>
             </View>
-            <TouchableOpacity style={styles.button} onPress={this.onSubmit}>
+            <TouchableOpacity style={styles.sButton} onPress={this.onSubmit}>
               <Text style={{color: 'white'}}>Submit</Text>
             </TouchableOpacity>
           </View>
@@ -333,7 +333,15 @@ const styles = StyleSheet.create({
     backgroundColor: '#A2A838',
     borderRadius: 90,
   },
-
+  sButton: {
+    marginTop: 30,
+    padding: 10,
+    marginHorizontal: 40,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#A2A838',
+    borderRadius: 90,
+  },
   radioBtn: {
     flexDirection: 'row',
     alignItems: 'center',

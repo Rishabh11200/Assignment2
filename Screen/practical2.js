@@ -10,17 +10,22 @@ import {
   TouchableOpacity,
   FlatList,
   ToastAndroid,
+  TextInput,
+  KeyboardAvoidingView,
+  Platform,
 } from 'react-native';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 export default class practical2 extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       data: [],
+      name: '',
     };
   }
   componentDidMount() {
-    values = [
+    value = [
       {uName: 'Jamari Gould'},
       {uName: 'Adelyn Sutton'},
       {uName: 'Elsa Mckee'},
@@ -42,7 +47,7 @@ export default class practical2 extends React.Component {
       {uName: 'Russell Bennett'},
       {uName: 'Oswaldo Grimes'},
     ];
-    this.setState({data: values});
+    this.setState({data: value});
   }
 
   onPressUserName(item) {
@@ -54,14 +59,38 @@ export default class practical2 extends React.Component {
       ToastAndroid.CENTER,
     );
   }
+  searchText = text => {
+    this.setState({name: text});
+  };
+
+  onPressSearch = () => {
+    const newData = this.state.data.filter(item => {
+      const itemData = `${item.uName.toUpperCase()}`;
+
+      const textData = this.state.name.toUpperCase();
+
+      return itemData.indexOf(textData) > -1;
+    });
+    this.setState({data: newData});
+  };
   render() {
     const {data} = this.state;
     return (
       <SafeAreaView style={styles.practicalScreen}>
         <View style={styles.staticContainer}>
           <Text style={styles.headingText}>People details</Text>
+          <TextInput
+            autoCapitalize="none"
+            autoCorrect={false}
+            onChangeText={this.searchText}
+            placeholder="Search"
+            style={styles.textInput}
+            textStyle={{color: '#000'}}
+            clearButtonMode="always"
+          />
         </View>
-        <View>
+
+        <View style={{flex: 1}}>
           <FlatList
             data={this.state.data}
             renderItem={({item}) => (
@@ -82,6 +111,17 @@ export default class practical2 extends React.Component {
             )}
           />
         </View>
+        <View style={{alignItems: 'center', justifyContent: 'center'}}>
+          <KeyboardAvoidingView
+            behaviour="position"
+            keyboardVerticalOffset={Platform.os === 'ios' ? 64 : 0}>
+            <View style={styles.button}>
+              <TouchableOpacity onPress={this.onPressSearch}>
+                <Icon style={styles.icon} name={'search'} size={20} />
+              </TouchableOpacity>
+            </View>
+          </KeyboardAvoidingView>
+        </View>
       </SafeAreaView>
     );
   }
@@ -98,6 +138,7 @@ const styles = StyleSheet.create({
   headingText: {
     fontSize: 20,
     fontWeight: 'bold',
+    color: 'black',
   },
   item: {
     paddingTop: 30,
@@ -106,5 +147,25 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontWeight: 'bold',
     color: 'black',
+  },
+  icon: {
+    marginHorizontal: 5,
+    alignSelf: 'center',
+    justifyContent: 'center',
+    color: 'black',
+  },
+  textInput: {
+    borderRadius: 25,
+    borderColor: '#333',
+    backgroundColor: '#fff',
+    width: '100%',
+  },
+  button: {
+    marginTop: 10,
+    padding: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'cyan',
+    borderRadius: 100,
   },
 });
